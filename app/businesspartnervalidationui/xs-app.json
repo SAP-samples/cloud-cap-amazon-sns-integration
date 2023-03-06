@@ -1,0 +1,35 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+        "source": "^/odata/v4/BusinessPartnerQueryService/(.*)$",
+        "target": "/odata/v4/BusinessPartnerQueryService/$1",
+        "destination": "business-partner-validation-srv",
+        "authenticationType": "xsuaa",
+        "csrfProtection": false,
+        "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/resources/(.*)$",
+      "target": "/resources/$1",
+      "authenticationType": "none",
+      "destination": "ui5",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/test-resources/(.*)$",
+      "target": "/test-resources/$1",
+      "authenticationType": "none",
+      "destination": "ui5",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    }
+  ]
+}

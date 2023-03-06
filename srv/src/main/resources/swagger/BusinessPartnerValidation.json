@@ -1,0 +1,177 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Service for namespace BusinessPartnerValidationService",
+    "description": "This service is located at [/odata/v4/BusinessPartnerValidationService/](/odata/v4/BusinessPartnerValidationService/)",
+    "version": ""
+  },
+  "servers": [
+    {
+      "url": "/odata/v4/BusinessPartnerValidationService"
+    }
+  ],
+  "tags": [],
+  "paths": {
+    "/validateBusinessPartner": {
+      "post": {
+        "summary": "Invoke action validateBusinessPartner",
+        "tags": [
+          "Service Operations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BusinessPartnerValidationService.ValidateBusinessPartnerResponse"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bp": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/$batch": {
+      "post": {
+        "summary": "Send a group of requests",
+        "description": "Group multiple requests into a single request payload, see [Batch Requests](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_BatchRequests).\n\n*Please note that \"Try it out\" is not supported for this request.*",
+        "tags": [
+          "Batch Requests"
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Batch request",
+          "content": {
+            "multipart/mixed;boundary=request-separator": {
+              "schema": {
+                "type": "string"
+              },
+              "example": "--request-separator\nContent-Type: application/http\nContent-Transfer-Encoding: binary\n\nGET undefined HTTP/1.1\nAccept: application/json\n\n\n--request-separator--"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch response",
+            "content": {
+              "multipart/mixed": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "--response-separator\nContent-Type: application/http\n\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{...}\n--response-separator--"
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BusinessPartnerValidationService.ValidateBusinessPartnerResponse": {
+        "title": "ValidateBusinessPartnerResponse",
+        "type": "object",
+        "properties": {
+          "validationResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "validationMsg": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "details": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "innererror": {
+                "type": "object",
+                "description": "The structure of this object is service-specific"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "error": {
+        "description": "Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

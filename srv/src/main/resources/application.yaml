@@ -1,0 +1,38 @@
+## AWS SNS Config
+amazonProperties:
+  sns.topic.arn.bpValidation: arn:aws:sns:eu-central-1:321880606331:S4HANA-Business-Partner-Validation
+  region: eu-central-1
+
+## Logging Config
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.jdbc: DEBUG
+    com.sap.cds.impl: DEBUG
+---
+spring:
+  config.activate.on-profile: default
+cds:
+  messaging.services:
+    messaging-em:
+      kind: enterprise-messaging
+      subscribePrefix: ICSV/awsha1/mesh1/ce/
+      queue:
+        name: ICSV/awsha1/mesh1/s4h/bp
+  
+---
+spring:
+  config.activate.on-profile: cloud
+cds:
+  messaging.services:
+    messaging-em:
+      kind: enterprise-messaging
+      subscribePrefix: ICSV/awsha1/mesh1/ce/
+      queue:
+        name: ICSV/awsha1/mesh1/s4h/bp
+  remote.services:
+    API_BUSINESS_PARTNER:
+      destination:
+        name: "S4HANA_DEST"
+        type: "odata-v2"
+        suffix: "/sap/opu/odata/sap"

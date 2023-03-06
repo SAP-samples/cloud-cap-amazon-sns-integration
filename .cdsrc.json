@@ -1,0 +1,38 @@
+{
+  "build": {
+    "target": "."
+  },
+  "hana": {
+    "deploy-format": "hdbtable"
+  },
+  "requires": {
+    "[production]": {
+        "db": {
+            "kind": "hana-cloud"
+        },
+        "auth": {
+            "kind": "xsuaa"
+        }
+    },
+    "[development]": {
+        "db": {
+            "kind": "sqlite"
+        },
+        "auth": {
+          "kind": "dummy-auth",
+          "users": {
+            "rose": {
+              "password": "rose",
+              "roles": []
+            },
+            "weikun": {
+              "password": "weikun",
+              "roles": [
+                "admin"
+              ]
+            }
+          }
+        }
+      }
+  }
+}

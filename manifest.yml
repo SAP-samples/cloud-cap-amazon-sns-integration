@@ -1,0 +1,24 @@
+# Generated manifest.yml based on template version 0.1.0
+# appName = business-partner-validation
+# language=java
+# multitenancy=false
+---
+applications:
+# -----------------------------------------------------------------------------------
+# Backend Service
+# -----------------------------------------------------------------------------------
+- name: business-partner-validation-srv
+  random-route: true  # for development only
+  path: srv/target/business-partner-validation-exec.jar
+  memory: 1G
+  disk_quota: 512M
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+  buildpack: java_buildpack
+  services:
+  - s4hana-destination
+  - s4hana-connectivity
+  - business-partner-validation-xsuaa
+  - eventmesh
+  - business-partner-validation-db
+

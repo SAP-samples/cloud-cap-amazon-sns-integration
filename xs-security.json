@@ -1,0 +1,33 @@
+{
+  "xsappname": "business-partner-validation",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of called application",
+  "scopes": [
+    {
+        "name": "$XSAPPNAME.admin",
+        "description": "business partner validation application admin"
+    },
+    {
+        "name": "$XSAPPNAME.validator",
+        "description": "business partner validator"
+    }
+  ],
+  "role-templates": [
+    {
+        "name": "admin",
+        "description": "generated",
+        "scope-references": [
+          "$XSAPPNAME.admin"
+        ],
+        "attribute-references": []
+   	},
+    {
+        "name": "validator",
+        "description": "generated",
+        "scope-references": [
+          "$XSAPPNAME.validator"
+        ],
+        "attribute-references": []
+    }
+  ]
+}

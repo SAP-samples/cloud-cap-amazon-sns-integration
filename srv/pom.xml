@@ -1,0 +1,222 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>business-partner-validation-parent</artifactId>
+		<groupId>customer</groupId>
+		<version>${revision}</version>
+	</parent>
+
+	<artifactId>business-partner-validation</artifactId>
+	<packaging>jar</packaging>
+
+	<name>business-partner-validation</name>
+
+	<!-- ACTUAL DEPENDENCIES -->
+	<dependencies>
+		<!-- CDS SPRING BOOT STARTER -->
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-starter-spring-boot</artifactId>
+		</dependency>
+
+		<!-- ODATA PROTOCOL ADAPTER -->
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-adapter-odata-v4</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+        <!-- SAP Event Mesh Dependency -->
+		<dependency>
+  			<groupId>com.sap.cds</groupId>
+  			<artifactId>cds-feature-enterprise-messaging</artifactId>
+  			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+        <!-- AWS SDK SNS -->
+		<dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sns</artifactId>
+            <version>2.17.228</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>translate</artifactId>
+            <version>2.17.228</version>
+        </dependency>
+
+        <!-- SAP CLOUD SDK Dependencies-->
+		<dependency>
+    		<groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+    		<artifactId>scp-cf</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>com.sap.cloud.sdk.s4hana</groupId>
+            <artifactId>s4hana-api-odata-onpremise</artifactId>
+            <version>3.74.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sap.cloud.sdk.s4hana</groupId>
+            <artifactId>s4hana-connectivity</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sap.cloud.sdk.s4hana</groupId>
+            <artifactId>s4hana-core</artifactId>
+        </dependency>
+
+		<dependency>
+  			<groupId>com.sap.cds</groupId>
+  			<artifactId>cds-integration-cloud-sdk</artifactId>
+		</dependency>
+
+        <!-- SAP CAP Remote Services Dependency-->
+        <dependency>
+            <groupId>com.sap.cds</groupId>
+            <artifactId>cds-feature-remote-odata</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- SAP Cloud Foundry Dependency-->
+        <dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-starter-cloudfoundry</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-feature-cloudfoundry</artifactId>
+		</dependency>
+
+        <!-- Use HANA DB Locally-->
+        <dependency>
+            <groupId>com.sap.cds</groupId>
+            <artifactId>cds-feature-hana</artifactId>
+        </dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<!-- SPRING BOOT PLUGIN -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>repackage</id>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>exec</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- STEPS TO BUILD CDS MODEL AND GENERATE POJOs -->
+			<plugin>
+				<groupId>com.sap.cds</groupId>
+				<artifactId>cds-maven-plugin</artifactId>
+				<version>${cds.services.version}</version>
+				<executions>
+					<execution>
+						<id>cds.clean</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>cds.install-node</id>
+						<goals>
+							<goal>install-node</goal>
+						</goals>
+						<configuration>
+							<skip>${cdsdk-global}</skip>
+							<downloadUrl>${node.url}</downloadUrl>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>install-cdsdk</id>
+						<goals>
+							<goal>install-cdsdk</goal>
+						</goals>
+						<configuration>
+							<skip>${cdsdk-global}</skip>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>cds.build</id>
+						<goals>
+							<goal>cds</goal>
+						</goals>
+						<configuration>
+							<commands>
+								<command>build --for java-cf</command>
+								<command>deploy --to sql --dry >
+									"${project.basedir}/src/main/resources/schema.sql"</command>
+                                <command>compile srv/services.cds -s BusinessPartnerQueryService -2 openapi --openapi:url /odata/v4/BusinessPartnerQueryService >
+									${project.basedir}/src/main/resources/swagger/BusinessPartnerQuery.json</command>
+                                <command>compile srv/services.cds -s BusinessPartnerValidationService -2 openapi --openapi:url /odata/v4/BusinessPartnerValidationService >
+									${project.basedir}/src/main/resources/swagger/BusinessPartnerValidation.json</command>
+							</commands>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>cds.generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<basePackage>cds.gen</basePackage>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- A profile that uses global installation of @sap/cds-dk -->
+		<profile>
+			<id>cdsdk-global</id>
+			<properties>
+				<cdsdk-global>true</cdsdk-global>
+			</properties>
+		</profile>
+	</profiles>
+</project>

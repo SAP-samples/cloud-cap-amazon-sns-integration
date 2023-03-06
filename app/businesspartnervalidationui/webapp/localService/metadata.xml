@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="BusinessPartnerQueryService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Notifications" EntityType="BusinessPartnerQueryService.Notifications">
+                    <NavigationPropertyBinding Path="verificationStatus" Target="StatusValues"/>
+                    <NavigationPropertyBinding Path="addresses" Target="Addresses"/>
+                </EntitySet>
+                <EntitySet Name="Addresses" EntityType="BusinessPartnerQueryService.Addresses">
+                    <NavigationPropertyBinding Path="notifications" Target="Notifications"/>
+                </EntitySet>
+                <EntitySet Name="BusinessPartnerAddress" EntityType="BusinessPartnerQueryService.BusinessPartnerAddress"/>
+                <EntitySet Name="BusinessPartner" EntityType="BusinessPartnerQueryService.BusinessPartner"/>
+                <EntitySet Name="StatusValues" EntityType="BusinessPartnerQueryService.StatusValues"/>
+            </EntityContainer>
+            <EntityType Name="Notifications">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="businessPartnerId" Type="Edm.String"/>
+                <Property Name="businessPartnerName" Type="Edm.String"/>
+                <NavigationProperty Name="verificationStatus" Type="BusinessPartnerQueryService.StatusValues">
+                    <ReferentialConstraint Property="verificationStatus_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="verificationStatus_code" Type="Edm.String"/>
+                <NavigationProperty Name="addresses" Type="Collection(BusinessPartnerQueryService.Addresses)" Partner="notifications">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Addresses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="notifications" Type="BusinessPartnerQueryService.Notifications" Partner="addresses">
+                    <ReferentialConstraint Property="notifications_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="notifications_ID" Type="Edm.Guid"/>
+                <Property Name="addressId" Type="Edm.String"/>
+                <Property Name="country" Type="Edm.String"/>
+                <Property Name="cityName" Type="Edm.String"/>
+                <Property Name="streetName" Type="Edm.String"/>
+                <Property Name="postalCode" Type="Edm.String"/>
+                <Property Name="isModified" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="businessPartnerId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="BusinessPartnerAddress">
+                <Key>
+                    <PropertyRef Name="businessPartnerId"/>
+                </Key>
+                <Property Name="businessPartnerId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="addressId" Type="Edm.String" MaxLength="10"/>
+                <Property Name="country" Type="Edm.String" MaxLength="3"/>
+                <Property Name="cityName" Type="Edm.String" MaxLength="40"/>
+                <Property Name="streetName" Type="Edm.String" MaxLength="60"/>
+                <Property Name="postalCode" Type="Edm.String" MaxLength="10"/>
+            </EntityType>
+            <EntityType Name="BusinessPartner">
+                <Key>
+                    <PropertyRef Name="businessPartnerId"/>
+                </Key>
+                <Property Name="businessPartnerId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="businessPartnerName" Type="Edm.String" MaxLength="81"/>
+                <Property Name="searchTerm1" Type="Edm.String" MaxLength="20"/>
+                <Property Name="businessPartnerIsBlocked" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="StatusValues">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="code" Type="Edm.String" Nullable="false"/>
+                <Property Name="value" Type="Edm.String"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+                <Property Name="updateCode" Type="Edm.Boolean"/>
+            </EntityType>
+            <Annotations Target="BusinessPartnerQueryService.Notifications/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="BusinessPartnerQueryService.Notifications/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="BusinessPartnerQueryService.Notifications/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="BusinessPartnerQueryService.Notifications/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="BusinessPartnerQueryService.Notifications/businessPartnerId">
+                                        <Annotation Term="Common.Label" String="BusinessPartner ID"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="BusinessPartnerQueryService.Notifications/verificationStatus">
+                                        <Annotation Term="Common.Label" String="Verfication Status"/>
+                                    </Annotations>
+                                    <Annotations Target="BusinessPartnerQueryService.Notifications/verificationStatus_code">
+                                        <Annotation Term="Common.Label" String="Verfication Status"/>
+                                    </Annotations>
+                                    <Annotations Target="BusinessPartnerQueryService.EntityContainer/BusinessPartnerAddress">
+                                        <Annotation Term="Capabilities.DeleteRestrictions">
+                                            <Record Type="Capabilities.DeleteRestrictionsType">
+                                                <PropertyValue Property="Deletable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.InsertRestrictions">
+                                            <Record Type="Capabilities.InsertRestrictionsType">
+                                                <PropertyValue Property="Insertable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.UpdateRestrictions">
+                                            <Record Type="Capabilities.UpdateRestrictionsType">
+                                                <PropertyValue Property="Updatable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                    <Annotations Target="BusinessPartnerQueryService.EntityContainer/BusinessPartner">
+                                        <Annotation Term="Capabilities.DeleteRestrictions">
+                                            <Record Type="Capabilities.DeleteRestrictionsType">
+                                                <PropertyValue Property="Deletable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.InsertRestrictions">
+                                            <Record Type="Capabilities.InsertRestrictionsType">
+                                                <PropertyValue Property="Insertable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.UpdateRestrictions">
+                                            <Record Type="Capabilities.UpdateRestrictionsType">
+                                                <PropertyValue Property="Updatable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                </Schema>
+                            </edmx:DataServices>
+                        </edmx:Edmx>

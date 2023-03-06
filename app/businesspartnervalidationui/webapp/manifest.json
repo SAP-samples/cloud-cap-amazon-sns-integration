@@ -1,0 +1,181 @@
+{
+    "_version": "1.40.0",
+    "sap.app": {
+        "id": "businesspartnervalidationui",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "ui5template.fiorielements.v4.lrop",
+            "version": "1.0.0"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "odata/v4/BusinessPartnerQueryService/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation"
+                    ],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            },
+            "annotation": {
+                "type": "ODataAnnotation",
+                "uri": "annotations/annotation.xml",
+                "settings": {
+                    "localUri": "annotations/annotation.xml"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "businesspartnervalidationui-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "businesspartner",
+                    "action": "display",
+                    "title": "S/4HANA Business Partner Validation",
+                    "subTitle": "Manage Business Partners",
+                    "icon": "sap-icon://project-definition-triangle"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.102.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "businesspartnervalidationui.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "NotificationsList",
+                    "target": "NotificationsList"
+                },
+                {
+                    "pattern": "Notifications({key}):?query:",
+                    "name": "NotificationsObjectPage",
+                    "target": "NotificationsObjectPage"
+                },
+                {
+                    "pattern": "Notifications({key})/addresses({key2}):?query:",
+                    "name": "AddressesObjectPage",
+                    "target": "AddressesObjectPage"
+                }
+            ],
+            "targets": {
+                "NotificationsList": {
+                    "type": "Component",
+                    "id": "NotificationsList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "Notifications",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "Notifications": {
+                                    "detail": {
+                                        "route": "NotificationsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "NotificationsObjectPage": {
+                    "type": "Component",
+                    "id": "NotificationsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": true,
+                            "entitySet": "Notifications",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "AddressesObjectPage": {
+                    "type": "Component",
+                    "id": "AddressesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Addresses"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "routes"
+    }
+}

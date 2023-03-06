@@ -1,0 +1,199 @@
+_schema-version: "3.1"
+ID: business-partner-validation
+description: business-partner-validation application
+version: 1.0.0-SNAPSHOT
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk@^6 cds build --production
+
+modules:
+# --------------------- SERVER MODULE ------------------------
+- name: business-partner-validation-srv
+# ------------------------------------------------------------
+  type: java
+  path: srv
+  properties:
+    SPRING_PROFILES_ACTIVE: cloud
+  requires:
+  - name: business-partner-validation-db
+  - name: business-partner-validation-auth
+  - name: eventmesh
+  - name: s4hana-connectivity
+  - name: s4hana-destination
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: java_buildpack
+  build-parameters:
+    ignore: [ ".env", "node_modules/" ]
+    build-result: target/*-exec.jar
+    builder: custom
+    commands:
+    - mvn clean package -DskipTests=true
+# -------------------- SIDECAR MODULE ------------------------
+- name: business-partner-validation-db-deployer
+# ------------------------------------------------------------
+  type: hdb
+  path: db
+  requires:
+  - name: business-partner-validation-db
+  parameters:
+    buildpack: nodejs_buildpack
+ # ------------------ DESTINATION CONTENT ---------------------
+- name: business-partner-validation-destination-content
+# ------------------------------------------------------------
+  type: com.sap.application.content
+  requires:
+  - name: business-partner-validation-destination-service
+    parameters:
+      content-target: true
+  - name: business-partner-validation_html_repo_host
+    parameters:
+      service-key:
+        name: business-partner-validation_html_repo_host-key
+  - name: business-partner-validation-auth
+    parameters:
+      service-key:
+        name: business-partner-validation-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: routes_business_partner_validation_html_repo_host
+          ServiceInstanceName: business-partner-validation-html5-app-host-service
+          ServiceKeyName: business-partner-validation_html_repo_host-key
+          sap.cloud.service: routes
+        - Authentication: OAuth2UserTokenExchange
+          Name: routes_business_partner_validation_auth
+          ServiceInstanceName: business-partner-validation-auth
+          ServiceKeyName: business-partner-validation-auth-key
+          sap.cloud.service: routes
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+# ------------------ APPLICATION CONTENT ---------------------
+- name: business-partner-validation-app-content
+# ------------------------------------------------------------
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: business-partner-validation_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - businesspartnervalidationui.zip
+      name: businesspartnervalidationui
+      target-path: resources/
+# ------------- UI APPLICATION: BUSINESS PARTNER VALIDATION ----------------
+- name: businesspartnervalidationui
+# ---------------------------------------------------------------------------
+  type: html5
+  path: app/businesspartnervalidationui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+
+resources:
+# ------------------------------------------------------------
+- name: business-partner-validation-db
+# ------------------------------------------------------------
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+# ------------------------------------------------------------
+- name: business-partner-validation-auth
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: business-partner-validation-${space}
+      role-collections:
+        - name: 'S/4HANA-Business-Partner-App-Admin'
+          description: Role Collection of Manage S/4HANA Business Partner Application
+          role-template-references:
+            - $XSAPPNAME.admin
+        - name: 'S/4HANA-Business-Partner-App-Validator'
+          description: Role Collection of Use S/4HANA Business Partner Validation Application
+          role-template-references:
+            - $XSAPPNAME.validator
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+# ------------------------------------------------------------
+- name: business-partner-validation-destination-service
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  requires:
+    - name: srv-api
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: business-partner-validation-srv
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: business-partner-validation-destination-service
+    service-plan: lite
+# ------------------------------------------------------------
+- name: business-partner-validation_html_repo_host
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: business-partner-validation-html5-app-host-service
+    service-plan: app-host
+# ------------------------------------------------------------
+- name: eventmesh
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: enterprise-messaging
+    service-plan: default
+# ------------------------------------------------------------
+- name: s4hana-connectivity
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: connectivity
+    service-name: s4hana-connectivity
+    service-plan: lite
+# ------------------------------------------------------------
+- name: s4hana-destination
+# ------------------------------------------------------------
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-name: s4hana-destination
+    service-plan: lite
