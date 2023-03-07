@@ -14,7 +14,7 @@ Inside of this application, the business partner validation application need to 
 
 1. Clone the business partner validation application code from **main** branch into your SAP Business Application Studio dev space.
 
-    ![Capture](https://github.wdf.sap.corp/storage/user/105079/files/a3165425-8d7e-44a3-962f-883a4150dab2)
+    ![1](https://user-images.githubusercontent.com/29527722/223293267-f1b75c25-3e80-40c2-b23a-2c54dbfaf6da.png)
     
     > ### **Notes**
     > - **app** folder contains the code for business partner validation Fiori Element UI
@@ -22,17 +22,17 @@ Inside of this application, the business partner validation application need to 
     > - **srv** folder contains the code of business partner validation application backend Java code.
     > - **mta.yaml** file is the deployment script for deployment purpose.
 
-2. Open the **mat.yaml** file, scrow down to the line #174, change the name of this resource to the event mesh instance's name we created in this [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%202%20-%20Setup%20S4HANA%20Enterprise%20Messaging%20%26%20SAP%20BTP%20Event%20Mesh#setup-sap-event-mesh)
+2. Open the **mat.yaml** file, scrow down to the line #174, change the name of this resource to the event mesh instance's name we created in this [step](https://github.com/SAP-samples/cloud-cap-amazon-sns-integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform)
     
-    ![Capture](https://github.wdf.sap.corp/storage/user/105079/files/96bf23dc-314a-42f3-a06b-eb48c2bee438)
+    ![2](https://user-images.githubusercontent.com/29527722/223293290-1f32fb85-d781-4434-840a-1a0d113bab82.png)
 
 3. In the **mta.yaml** file, scrow down to the line #189, change the name of this resource to the SAP BTP Destination Service instance we created in this [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform)
 
-    ![Capture](https://github.wdf.sap.corp/storage/user/105079/files/6f25990d-9126-4a72-bc9c-076093b39067)
+    ![3](https://user-images.githubusercontent.com/29527722/223293317-5de305fc-1121-4227-b544-f77b55cc97a9.png)
     
 4. Go back to the SAP BTP subaccount, create the **SAP Connectivity Service instance**. Make sure the give the name as **s4hana-connectivity** for the convenience of deployment purpose. Please refer to below image when you create Connectivity Service instance.
     
-    ![3dd720ac-af72-4b30-b21a-d05843100809](https://github.wdf.sap.corp/storage/user/105079/files/12b898ee-e94a-4519-b314-65443ca7402f)
+    ![4](https://user-images.githubusercontent.com/29527722/223293340-84f1eae0-35d1-4abb-8602-efcdd38e6fe0.png)
 
 Now we have created & binded the SAP Event Mesh, Destination Service, and Connectivity Service instances for the business partner validation application successfully. Let's jump to the next section to make some configuration changes inside of the business partner validation application.
 
@@ -46,13 +46,13 @@ Since the backend service of the business partner validation application is buil
     
     Please change the subscribePrefix and queue.name value in the application.yml file to the one we created in this previous [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%202%20-%20Setup%20S4HANA%20Enterprise%20Messaging%20%26%20SAP%20BTP%20Event%20Mesh#setup-sap-event-mesh).
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/b41c745c-1b28-425a-b8d5-8a49ccefcc3c)
+    ![1](https://user-images.githubusercontent.com/29527722/223293749-4aeacee2-92ae-48fb-bcc8-8b6f737fb0c5.png)
 
 3. In the business partner validation application, the backend service consume S/4HANA On-Premise Business Partner OData API via **Remote Services mechanism** provided by the SAP Cloud Application Programming Model. Please refer to this [documentation](https://cap.cloud.sap/docs/java/remote-services?q=mta.yaml#configuring-remote-services) for more details.
 
     Please change the **destination name** to the one **we created in the step 4 in this previous** [**tutorial**](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform).
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/127834af-e7d9-4bd8-b166-d51a5dbe47c0)
+    ![2](https://user-images.githubusercontent.com/29527722/223293766-795e0294-f2d8-485b-b544-90e12804be39.png)
 
 Now we have modified the property file for the business partner validation application backend service successfully. Let's go and deploy the entire full stack application in the next section.
 
@@ -66,68 +66,68 @@ Now we have modified the property file for the business partner validation appli
 In this section, I will show you how to build and deploy the business partner validation application to your SAP BTP subaccount.
 
 1. Go back to the dev space in the **Business Application Studio**, right click on the **mat.yaml** file, then select **Build MTA Project** in the drop down to build and package the application.
-
-    ![b13b0c63-fc03-47e3-9be7-08e7c92ab0e5](https://github.wdf.sap.corp/storage/user/105079/files/08606baa-bfc9-4556-b092-0b89685e4d06)
+    
+    ![1](https://user-images.githubusercontent.com/29527722/223293939-64c4391e-9315-4330-9861-ebe4322b9382.png)
     
     Once the build process complete, there will be a new folder, which name is **mta_archives**, show up under the project root path. Inside of this folder, it contains a **business-partner-validation_1.0.0-SNAPSHOT.mtar** file which we could use for the BTP deployment.
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/0c770cb2-1bb2-4f0f-ac8d-5bc26f357ab6)
+    ![2](https://user-images.githubusercontent.com/29527722/223293956-9e2b554a-d0fe-4672-b3b2-191c21c56ccd.png)
 
 2. Right click on the **business-partner-validation_1.0.0-SNAPSHOT.mtar** file, then select **Deploy MTA Archive** from the dropdown manul. It will trigger the deployment process of the business partner validation project.
 
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/6c04055e-75d4-485c-bc83-ec2ca98f8a84)
+    ![3](https://user-images.githubusercontent.com/29527722/223293976-d78589d3-1448-43a6-8383-ff4b58dfda66.png)
     
     Once the deployment finished, in the deployment task console we could see the words as **Process Finished**. This means that the BTP deployment done without any issues. Cheers!
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/d8102d58-1d13-48a8-937e-a3497dc0c6aa)
+    ![4](https://user-images.githubusercontent.com/29527722/223293994-ebc55a8d-e1b7-4d24-aecf-8333740364cb.png)
 
 ## Setup Fiori Launchpad For the Business Partner Validation Application
 
 1. Go back to the **SAP BTP Subaccount**, click the **Instances and Subscription** on the left panel, then click the **Go to Application** icon of the Launchpad Service subscription.
     
-    ![f9ed2888-64ea-4833-a58a-b28887cadf8b](https://github.wdf.sap.corp/storage/user/105079/files/589f69d3-d106-4b7b-8554-297ea5262083)
+    ![1](https://user-images.githubusercontent.com/29527722/223294253-a0dc6448-b54f-4833-9008-673d399a89ee.png)
     
 2. In the Lanuchpad Service console, Select Chaneel Manager on the lft panel, then click Update Content icon for the HTML5 Apps.
 
-    ![addf67fe-485e-42e2-b191-9c65cbfb88f3](https://github.wdf.sap.corp/storage/user/105079/files/d48f0bd5-e721-4739-b1d8-13e61430a6ab)
+    ![2](https://user-images.githubusercontent.com/29527722/223294271-6fe15d4e-8e66-43ff-aa57-534a3251f75f.png)
     
 3. Select **Content Manager** on the left panel, then select **Content Explore** and click the **HTMP5 Apps** card.
 
-    ![9eb40dd4-e119-4f4e-a5f6-99fd40741024](https://github.wdf.sap.corp/storage/user/105079/files/6da83a18-3f5c-4e5e-a3b7-43accc6ac313)
+    ![3](https://user-images.githubusercontent.com/29527722/223294306-e01452b5-518d-457d-a33f-244f77119fd3.png)
 
 4. Check the **S/4HANA Business Partner Validation** row and then click **Add to My Content** button
 
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/c9347ea3-e9ae-49fe-bf38-ee657a91cfad)
+    ![4](https://user-images.githubusercontent.com/29527722/223294345-9652c020-46c5-4e50-80c5-c226d2b2c54a.png)
     
     Go back to **My Content** page and this time you could see the **S/4HANA Business Partner Validation Fiori application** listing there.
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/1e6114bb-7d6f-478e-a017-af3bf61c6a3b)
+    ![5](https://user-images.githubusercontent.com/29527722/223294378-c4716256-e08f-4c8e-9542-9f0a06aefcbf.png)
 
 5. Click on the **Everyone** role lists in the **Items** table under **My Content** page. Inside of Everyone Role management page, click the **Edit** button, **assign the S/4HANA Business Partner Validation HTML5 Apps to this role**, then click **Save** button to save the assignment.
 
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/ca65952c-2561-4046-b7a6-cbcaaa2e6222)
+    ![6](https://user-images.githubusercontent.com/29527722/223294388-6bbf142c-d95b-4726-951e-1a7df9f5042b.png)
     
     Now everyone could see this S/4HANA Business Partner Validation Fiori application in the Fiori Launchpad. But don't worry about the security issue, this application is protected by the XSUAA service, which means that only the people whom have the certain roles could get access into this application.
 
 6. Go back to the **My Content** page, click on the **+New** button, and then select the **Group icon** in the dropdown to create a new group.
 
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/b5ff4c15-eaf1-4c98-9c6a-8b2b308daa89)
+    ![7](https://user-images.githubusercontent.com/29527722/223294406-206467c0-a1c2-4cd7-a138-a5be16c04c28.png)
     
     Give the group name as S/4HANA Business Partner Validation, then assign the S/4HANA Business Partner Validation HTML5 App to this group, then click **Save** button to save the assignment and create the group.
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/f31f21f1-939b-49fb-a96c-e15d47c571cb)
+    ![8](https://user-images.githubusercontent.com/29527722/223294417-b47863ee-e3cb-4ca7-b98b-80e5b7f10114.png)
     
 7. Select **Site Directory** form the left panel, then click **+ Create Site** button to create a new site for the Business Partner Validation application in the Fiori Launchpad
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/fdf27e29-b39a-42bf-a025-646fbfdb8a7d)
+    ![9](https://user-images.githubusercontent.com/29527722/223294457-53674b38-11e4-463f-aa45-058238932bb6.png)
     
     Give the **Site Name** as **S/4HANA Business Partner Validation** in the pop up window and then click the **Create** button to create the site.
     
-    ![Capture](https://github.wdf.sap.corp/storage/user/105079/files/d848f039-1233-4197-9953-1dccc68367a8)
+    ![10](https://user-images.githubusercontent.com/29527722/223294489-f9f9aee3-1469-4c49-aa58-f62b172a03c5.png)
     
     Once the site created, go back to the **Site Directory** page again. This time you could see that the new S/4HANA Business Partner Validation site has been created and showing up there. Click the **Go to site** icon to check if we could open the business partner validation application.
     
-    ![tempsnip](https://github.wdf.sap.corp/storage/user/105079/files/41e71d34-3542-4a27-8a61-4f26d318637e)
+    ![11](https://user-images.githubusercontent.com/29527722/223294503-71c45d31-46b8-443b-8438-b234ed75567c.png)
 
 ## Create User-Provided Variables and Bind to Business Partner Validation Backend CAP App.
 In-order to publish message to the Amazon SNS topic, we need to use the Amazon IAM programmatic user's access key and secret access key's value in our CAP application in-order to authenticate and authorize to the Amazon SNS topic we created previsouly. It's not an good idea to store these long-term AWS credentails in application configuration file or hard-coded in the code since it will bring security concerns and cause potential credentials leaking issue.
@@ -136,19 +136,19 @@ Thus, we will store these sensitive credentials as an user-provided variables an
     
 1. Go back to the **SAP BTP Subaccount**, go into the space and click on the **business-partner-validation-srv**. Click on the **User-Provided Variables** icon on the left panel.
 
-    ![f61032a3-56f4-4aa0-b8d2-617d31d1884e](https://github.wdf.sap.corp/storage/user/105079/files/f469d89c-340e-48d9-8ee8-bf583482aa48)
+    ![1](https://user-images.githubusercontent.com/29527722/223294609-f66b4376-ad53-444e-a548-9b23d366a28a.png)
 
 2. Create the User-Provided Variable **IAM_USER_ACCESS_KEY** by click the **Add Variable** button, give the value as the **Amazon IAM programmatic user's** **Access Key ID** we created in this [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%201%20-%20Setup%20Amazon%20Simple%20Notification%20Service#grant-publish-message-permission-to-the-iam-programmatic-user-on-amazon-sns-topic). Click on Save.
 
-    ![40f9e0c3-50f6-4780-a9cb-88a5f8dd4228](https://github.wdf.sap.corp/storage/user/105079/files/b57e4822-1d03-4bf8-a033-95081b72780e)
+    ![2](https://user-images.githubusercontent.com/29527722/223294626-338a5cd4-13d1-4cbe-bb9f-25b11a69138e.png)
 
 3. Create the User-Provided Variable **IAM_USER_SECRET_ACCESS_KEY** by click the **Add Variable** button, give the value as the **Amazon IAM programmatic user's** **Secret Access Key** we created in this [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%201%20-%20Setup%20Amazon%20Simple%20Notification%20Service#grant-publish-message-permission-to-the-iam-programmatic-user-on-amazon-sns-topic). Click on Save.
 
-    ![83967597-b261-43db-b862-7b8184614bd7](https://github.wdf.sap.corp/storage/user/105079/files/3bb912bc-6634-424b-9f05-e71ebdfce2fa)
+    ![3](https://user-images.githubusercontent.com/29527722/223294647-ed4163e9-7c9c-4103-bb81-262c63a4375b.png)
 
 4. Create the User-Provided Variable **BP_VALIDATION_UI_URL** by click the **Add Variable** button, give the value as the Business Partner Validation UI URL. Click on Save.
 
-    ![f02057b3-0691-43d0-a884-ada0ce4d323e](https://github.wdf.sap.corp/storage/user/105079/files/bc55cd09-222d-40ce-86cd-8e01213bdde4)
+   ![4](https://user-images.githubusercontent.com/29527722/223294660-5a3be6d4-c939-48cd-bfe5-6b823c3a8773.png)
 
 5. Go back to the application overview page, click on the **Restart** button to re-start the backedn CAP app.
 
