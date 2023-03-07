@@ -18,7 +18,7 @@ In this standalone extension App, the validator could review the business partne
 ## Architecture
 
 ### Solution Architecture Diagram
-![AWS_CAP_SNS drawio](https://github.wdf.sap.corp/storage/user/105079/files/43de0ae1-0aa6-4b3b-910f-8c3459728d24)
+![43de0ae1-0aa6-4b3b-910f-8c3459728d24](https://user-images.githubusercontent.com/29527722/223288208-4d04f097-4d84-4e05-a069-f7e7512026ed.png)
 - The Business Partner Validation application developed using SAP Cloud Application Programming Model (Java), and deployed on the SAP Business Technology Platform.
 - S/4HANA On-Premise System Sends Message to SAP Event Mesh through Enterprise Messaging Mechanism on Every Business Partner Create/Change Event
 - Business Partner Validation Application Consumes Message From SAP Event Mesh Message Queue, Persists Business Partner Data Into HANA Cloud DataBase
