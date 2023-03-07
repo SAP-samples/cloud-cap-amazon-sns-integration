@@ -22,11 +22,11 @@ Inside of this application, the business partner validation application need to 
     > - **srv** folder contains the code of business partner validation application backend Java code.
     > - **mta.yaml** file is the deployment script for deployment purpose.
 
-2. Open the **mat.yaml** file, scrow down to the line #174, change the name of this resource to the event mesh instance's name we created in this [step](https://github.com/SAP-samples/cloud-cap-amazon-sns-integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform)
+2. Open the **mat.yaml** file, scrow down to the line #174, change the name of this resource to the event mesh instance's name we created in this [step](https://github.com/SAP-samples/cloud-cap-amazon-sns-integration/tree/main/tutorials/Step%202%20-%20Setup%20S4HANA%20Enterprise%20Messaging%20%26%20SAP%20BTP%20Event%20Mesh#setup-sap-event-mesh)
     
     ![2](https://user-images.githubusercontent.com/29527722/223293290-1f32fb85-d781-4434-840a-1a0d113bab82.png)
 
-3. In the **mta.yaml** file, scrow down to the line #189, change the name of this resource to the SAP BTP Destination Service instance we created in this [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform)
+3. In the **mta.yaml** file, scrow down to the line #189, change the name of this resource to the SAP BTP Destination Service instance we created in this [step](https://github.com/SAP-samples/cloud-cap-amazon-sns-integration/tree/main/tutorials/Step%203%20-%20Setup%20Connectivity%20From%20SAP%20BTP%20To%20SAP%20S4HANA%20On-Premise%20System#configure-the-destination-in-the-sap-business-technology-platform)
 
     ![3](https://user-images.githubusercontent.com/29527722/223293317-5de305fc-1121-4227-b544-f77b55cc97a9.png)
     
