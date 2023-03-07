@@ -87,7 +87,6 @@ SAP S/4HANA 2020 On-Premise system provide a really simple way to configure the 
     > - the RFC Destination, OAuth client, and OAuth profile will be created automatically as well. 
     
     ![3](https://user-images.githubusercontent.com/29527722/223291320-c6896222-51bb-4f7b-be80-11b0b1065c8e.png)
-    ![4](https://user-images.githubusercontent.com/29527722/223291340-d368099f-8e42-4f6c-9e46-eafba24538dd.png)
     
     Select the channel just created, then clcik the **Check connectiom** button. If you are seeing the message as "Connection test for channel successful", then you have created the communication channel from S/4HANA On-Premise system to your BTP Subaccout successfully.
     
