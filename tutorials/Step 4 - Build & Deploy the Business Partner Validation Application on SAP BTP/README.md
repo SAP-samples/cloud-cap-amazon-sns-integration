@@ -40,7 +40,7 @@ Now we have created & binded the SAP Event Mesh, Destination Service, and Connec
 
 Since the backend service of the business partner validation application is build on SAP Cloud Application Programming Model (Java), so that we define several configuration and property in the application.yml file. Let make some changes there to make sure the deployment could be done without any error.
 
-1. Open the **srv/src/main/resources/application.yaml** file. Change the Amazon SNS **Topic ARN** and **Region** value to the one that we created in this previous [step](https://github.wdf.sap.corp/SCE/CAP-AWS-SNS-Integration/tree/main/tutorials/Step%201%20-%20Setup%20Amazon%20Simple%20Notification%20Service#create-amazon-sns-topic).
+1. Open the **srv/src/main/resources/application.yaml** file. Change the Amazon SNS **Topic ARN** and **Region** value to the one that we created in this previous [step](https://github.com/SAP-samples/cloud-cap-amazon-sns-integration/tree/main/tutorials/Step%201%20-%20Setup%20Amazon%20Simple%20Notification%20Service#create-amazon-sns-topic).
 
 2. In the business partner validation application, the backend service subscribe to the message queue in the Event Mesh, please refer to this [documentation](https://cap.cloud.sap/docs/java/messaging-foundation?q=mta.yaml#supported-message-brokers) for more details. So in the application.yaml file, we needs to **change the event mesh message queue subscription property** under the **default** and **cloud** spring profile.
     
