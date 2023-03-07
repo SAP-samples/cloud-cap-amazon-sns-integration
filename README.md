@@ -65,3 +65,11 @@ Subscriptions required in your SAP Business Technology Platform Account:
 #### Step 4. [Build & Deploy the Business Partner Validation Application on SAP BTP](/tutorials/Step%204%20-%20Build%20%26%20Deploy%20the%20Business%20Partner%20Validation%20Application%20on%20SAP%20BTP/README.md)
 
 #### Step 5. [S/4HANA Business Partner Validation Application Walk Through](/tutorials/Step%205.%20S4HANA%20Business%20Partner%20Validation%20Application%20Walk%20Through/README.md)
+
+## How to obtain support
+[Create an issue](https://github.com/SAP-samples/<repository-name>/issues) in this repository if you find a bug or have questions about the content.
+
+For additional support, [ask a question in SAP Community](https://answers.sap.com/questions/ask.html).
+
+## License
+Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
