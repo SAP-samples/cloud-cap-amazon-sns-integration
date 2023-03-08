@@ -1,7 +1,7 @@
-# CAP-AWS-SNS-Integration
+# Welcome to the SAP CAP & Amazon Simple Notification Service Integration App
 
 ## Description
-This CAP-AWS-SNS-Integration project showcases how to integrate SAP Cloud Application Programming Model (CAP) with Amazone Simple Notification Service (SNS), to build a S/4HANA business process extension project, and send out email notification if it is necessary by using Amazon Simple Notification Service.
+This is an example project showcases how to integrate SAP Cloud Application Programming Model (CAP) with Amazone Simple Notification Service (SNS), to build a S/4HANA business process extension project, and send out email notification if it is necessary by using Amazon Simple Notification Service.
 
 This project showcases:
 
